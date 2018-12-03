@@ -62,7 +62,10 @@ def gen_inv_list(rke_cluster):
            }
 
         for node in rke_cluster['nodes']:
-            nodename = node['hostname_override'] or node['address']
+            if 'hostname_override' in node.keys():
+                nodename = node['hostname_override'] or node['address']
+            else:
+                nodename = node['address']
             if nodename not in ansible_inv['all']['hosts']:
                 ansible_inv['all']['hosts'].append(nodename)
                 ansible_inv['_meta']['hostvars'][nodename] = get_vars(node)
